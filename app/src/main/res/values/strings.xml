@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">ex4</string>
+    <string name="title_contact_list">Contacts</string>
+    <string name="title_contact_detail">Contact Detail</string>
+    <string name="insufficnet_permissions">Insufficient permissions</string>
+    <string name="name_name">Name: name</string>
+    <string name="phone_number_num">Phone Number : num</string>
+    <string name="contact_picture_if_exists">Contact picture if exists</string>
+    <string name="tel">tel:</string>
+    <integer name="request_permission_code">15</integer>
+</resources>
