@@ -21,7 +21,7 @@ import zeev.sagi.android.ex4.list_item.ContactsList
 import java.util.*
 
 
-class ContactListActivity(private var permission_code: Int = 0, private var mTwoPane: Boolean = false) : AppCompatActivity() {
+class ContactListActivity(private var permission_code: Int = 0) : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?)
@@ -51,7 +51,13 @@ class ContactListActivity(private var permission_code: Int = 0, private var mTwo
             mTwoPane = true
         }
 
-        setupRecyclerView(contact_list)
+        val transaction = fragmentManager.beginTransaction()
+        transaction.add(R.id.frameLayout, list_fragment.newInstance())
+        transaction.commit()
+    }
+
+    companion object {
+        var mTwoPane: Boolean = false
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray)
@@ -74,63 +80,7 @@ class ContactListActivity(private var permission_code: Int = 0, private var mTwo
         }
     }
 
-    private fun setupRecyclerView(recyclerView: RecyclerView) {
-        recyclerView.adapter = SimpleItemRecyclerViewAdapter(this, ContactsList.vector, mTwoPane)
-    }
 
-    class SimpleItemRecyclerViewAdapter(private val mParentActivity: ContactListActivity,
-                                        private val mValues: Vector<Contact>,
-                                        private val mTwoPane: Boolean) :
-            RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder>() {
 
-        private val mOnClickListener: View.OnClickListener
 
-        init {
-            mOnClickListener = View.OnClickListener { v ->
-                val item = v.tag as Contact
-                if (mTwoPane) {
-                    val fragment = ContactDetailFragment().apply {
-                        arguments = Bundle().apply {
-                            putString(ContactDetailFragment.ARG_ITEM_ID, item.id)
-                        }
-                    }
-                    mParentActivity.supportFragmentManager
-                            .beginTransaction()
-                            .replace(R.id.contact_detail_container, fragment)
-                            .commit()
-                } else {
-                    val intent = Intent(v.context, ContactDetailActivity::class.java).apply {
-                        putExtra(ContactDetailFragment.ARG_ITEM_ID, item.id)
-                    }
-                    v.context.startActivity(intent)
-                }
-            }
-        }
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.contact_list_content, parent, false)
-            return ViewHolder(view)
-        }
-
-        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            val item = mValues[position]
-            holder.mIdView.text = item.id
-            holder.mContentView.text = item.toString()
-
-            with(holder.itemView) {
-                tag = item
-                setOnClickListener(mOnClickListener)
-            }
-        }
-
-        override fun getItemCount(): Int {
-            return mValues.size
-        }
-
-        inner class ViewHolder(mView: View) : RecyclerView.ViewHolder(mView) {
-            val mIdView: TextView = mView.id_text
-            val mContentView: TextView = mView.content
-        }
-    }
 }

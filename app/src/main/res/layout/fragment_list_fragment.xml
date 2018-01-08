@@ -1,0 +1,9 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="zeev.sagi.android.ex4.list_fragment">
+
+    <include layout="@layout/contact_list" />
+
+</FrameLayout>
