@@ -1,14 +1,17 @@
 package zeev.sagi.android.ex4
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
 
@@ -19,6 +22,10 @@ import kotlinx.android.synthetic.main.contact_list.*
 import zeev.sagi.android.ex4.list_item.Contact
 import zeev.sagi.android.ex4.list_item.ContactsList
 import java.util.*
+import android.content.res.Configuration.SCREENLAYOUT_SIZE_LARGE
+import android.content.res.Configuration.SCREENLAYOUT_SIZE_MASK
+
+
 
 
 class ContactListActivity(private var permission_code: Int = 0) : AppCompatActivity() {
@@ -42,18 +49,25 @@ class ContactListActivity(private var permission_code: Int = 0) : AppCompatActiv
             requestPermissions(permissions,permission_code)
 
 
-        setSupportActionBar(toolbar)
-        toolbar.title = title
-
-
+        //setSupportActionBar(toolbar)
+        //toolbar.title = title
+        /*
         if (contact_detail_container != null) {
 
             mTwoPane = true
         }
+        */
+        mTwoPane = isTablet(baseContext)
 
         val transaction = fragmentManager.beginTransaction()
         transaction.add(R.id.frameLayout, list_fragment.newInstance())
         transaction.commit()
+        if(!mTwoPane)
+            frameLayout2.visibility = FrameLayout.GONE
+    }
+
+    fun isTablet(context: Context): Boolean {
+        return context.resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK >= Configuration.SCREENLAYOUT_SIZE_LARGE
     }
 
     companion object {
@@ -70,6 +84,11 @@ class ContactListActivity(private var permission_code: Int = 0) : AppCompatActiv
                 if(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)
                 {
                     ContactsList.init_load_contacts(baseContext)
+                    val transaction = fragmentManager.beginTransaction()
+                    transaction.add(R.id.frameLayout, list_fragment.newInstance())
+                    transaction.commit()
+                    if(!mTwoPane)
+                        frameLayout2.visibility = FrameLayout.GONE
                 }
                 else
                 {

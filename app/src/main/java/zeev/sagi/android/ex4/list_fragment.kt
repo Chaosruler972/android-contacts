@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.app.Fragment
 import android.content.Intent
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,7 +52,7 @@ class list_fragment : Fragment()
         init {
             mOnClickListener = View.OnClickListener { v ->
                 val item = v.tag as Contact
-                if (mTwoPane) {
+                if (ContactListActivity.mTwoPane) {
                     val fragment = ContactDetailFragment().apply {
                         arguments = Bundle().apply {
                             putString(ContactDetailFragment.ARG_ITEM_ID, item.id)
@@ -59,9 +60,11 @@ class list_fragment : Fragment()
                     }
                     mParentActivity.supportFragmentManager
                             .beginTransaction()
-                            .replace(R.id.contact_detail_container, fragment)
+                            .replace(R.id.frameLayout2, fragment)
                             .commit()
-                } else {
+                }
+                else
+                {
                     val intent = Intent(v.context, ContactDetailActivity::class.java).apply {
                         putExtra(ContactDetailFragment.ARG_ITEM_ID, item.id)
                     }
@@ -99,7 +102,6 @@ class list_fragment : Fragment()
     }
     companion object {
 
-        // TODO: Rename and change types and number of parameters
         fun newInstance(): list_fragment = list_fragment()
     }
 }// Required empty public constructor
