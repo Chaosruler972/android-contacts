@@ -6,9 +6,11 @@
     android:name="zeev.sagi.android.ex4.ContactListFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_alignParentStart="false"
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     android:layoutDirection="rtl"
+    android:textDirection="ltr"
     app:layoutManager="LinearLayoutManager"
     tools:context="zeev.sagi.android.ex4.ContactListActivity"
     tools:listitem="@layout/contact_list_content" />
